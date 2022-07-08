@@ -24,11 +24,12 @@ import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
 
-    Intent intent = getIntent();
+
     private Handler mHandler;
     Socket socket;
     PrintWriter sendWriter;
-    private String ip = intent.getStringExtra("ip");
+    // private String ip = intent.getStringExtra("ip");
+    private String ip = "10.101.3.35";
     private int port = 8880;
 
     TextView textView;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.textView);
         chatView = (TextView) findViewById(R.id.chatView);
         message = (EditText) findViewById(R.id.message);
+        Intent intent = getIntent();
         UserID = intent.getStringExtra("username");
         textView.setText(UserID);
         chatbutton = (Button) findViewById(R.id.chatbutton);
