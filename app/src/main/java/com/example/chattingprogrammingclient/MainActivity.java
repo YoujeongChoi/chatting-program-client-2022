@@ -1,5 +1,7 @@
 package com.example.chattingprogrammingclient;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,6 +22,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     Socket socket;
     PrintWriter sendWriter;
-    // private String ip = intent.getStringExtra("ip");
-    private String ip = "10.101.3.35";
-    private int port = 8880;
+    String IpAddress;
+    // private String IpAddress = "10.101.3.35";
+    private int port = 8889;
 
     TextView textView;
     String UserID;
@@ -54,22 +57,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+
         mHandler = new Handler();
         textView = (TextView) findViewById(R.id.textView);
         chatView = (TextView) findViewById(R.id.chatView);
         message = (EditText) findViewById(R.id.message);
-        Intent intent = getIntent();
         UserID = intent.getStringExtra("username");
+        IpAddress = intent.getStringExtra("ip");
         textView.setText(UserID);
         chatbutton = (Button) findViewById(R.id.chatbutton);
-
 
         new Thread() {
             public void run() {
                 try {
-                    InetAddress serverAddr = InetAddress.getByName(ip);
+
+                    InetAddress serverAddr = InetAddress.getByName(IpAddress);
                     socket = new Socket(serverAddr, port);
                     sendWriter = new PrintWriter(socket.getOutputStream());
                     BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
