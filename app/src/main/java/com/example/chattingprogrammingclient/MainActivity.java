@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Socket socket;
     PrintWriter sendWriter;
     private String ip = intent.getStringExtra("ip");
-    private int port = 8888;
+    private int port = 8880;
 
     TextView textView;
     String UserID;
