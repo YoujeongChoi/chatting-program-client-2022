@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     EditText message;
     String sendmsg;
     String read;
+    ImageButton backButton;
 
 
     @Override
@@ -71,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(UserID);
         chatbutton = (Button) findViewById(R.id.chatbutton);
 
+        // back
+        backButton = (ImageButton) findViewById(R.id.backButton);
+
         new Thread() {
             public void run() {
                 try {
@@ -90,6 +95,18 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } }}.start();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EnterActivity.class);
+                IpAddress = null;
+                UserID = null;
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         chatbutton.setOnClickListener(new View.OnClickListener() {
             @Override
