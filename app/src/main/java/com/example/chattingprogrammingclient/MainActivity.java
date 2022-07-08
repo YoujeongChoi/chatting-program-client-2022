@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
     PrintWriter sendWriter;
     String IpAddress;
     // private String IpAddress = "10.101.3.35";
-    private int port = 8889;
+    private int port = 8887;
 
     TextView textView;
     String UserID;
-    Button chatbutton;
+    ImageButton chatbutton;
     TextView chatView;
     EditText message;
     String sendmsg;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         UserID = intent.getStringExtra("username");
         IpAddress = intent.getStringExtra("ip");
         textView.setText(UserID);
-        chatbutton = (Button) findViewById(R.id.chatbutton);
+        chatbutton = (ImageButton) findViewById(R.id.chatbutton);
 
         // back
         backButton = (ImageButton) findViewById(R.id.backButton);
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 
 
         chatbutton.setOnClickListener(new View.OnClickListener() {
