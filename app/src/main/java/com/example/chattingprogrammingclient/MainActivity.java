@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     PrintWriter sendWriter;
     String IpAddress;
     // private String IpAddress = "10.101.3.35";
-    private int port = 8887;
+    private int port = 8885;
 
     TextView textView;
     String UserID;
@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
                 }.start();
             }
         });
+
+
     }
 
     class msgUpdate implements Runnable{
