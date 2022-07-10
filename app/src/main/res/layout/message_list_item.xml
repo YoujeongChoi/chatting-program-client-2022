@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp">
+
+    <ImageView
+        android:id="@+id/userImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/user_blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/userId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:text="유저이름"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/userImg"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/chatMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/userId"
+        app:layout_constraintStart_toStartOf="@id/userId"
+        android:background="@drawable/message_green_box"
+        android:text="메세지메세지메세지"
+        android:textSize="13dp"
+        android:textColor="@color/white"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:backgroundTint="#03C754"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="시간"
+        app:layout_constraintStart_toEndOf="@+id/chatMessage"
+        app:layout_constraintBottom_toBottomOf="@id/chatMessage"
+        android:layout_marginStart="10dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

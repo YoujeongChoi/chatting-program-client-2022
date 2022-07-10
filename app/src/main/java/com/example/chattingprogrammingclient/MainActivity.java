@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     String sendmsg;
     String read;
     ImageButton backButton;
+    Long sendTime;
+
+
 
 
     @Override
@@ -108,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         chatbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         super.run();
                         try {
+                            sendTime = System.currentTimeMillis();
                             sendWriter.println(UserID +">"+ sendmsg);
                             sendWriter.flush();
                             message.setText("");
