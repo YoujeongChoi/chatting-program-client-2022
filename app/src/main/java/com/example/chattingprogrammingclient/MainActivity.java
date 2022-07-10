@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     TextView main_top_userId;
     String UserID;
     ImageButton chatbutton;
-    TextView chatView;
+    // TextView chatView;
     EditText message;
     String sendmsg;
     String read;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         message = (EditText) findViewById(R.id.getMessageText);
 
         // chatView는 수정예정
-        chatView = (TextView) findViewById(R.id.chatView);
+//        chatView = (TextView) findViewById(R.id.chatView);
 
         adapter = new MessageAdapter(list);
         RecyclerView recyclerView = findViewById(R.id.chatRv);
@@ -137,19 +137,17 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         super.run();
                         try {
-                            Log.d(TAG, "순서확인용3333333");
-
                             hour = now.getHour();
                             min = now.getMinute();
-                            time = hour + "시 " + min +"분";
+                            if (hour < 12 ) {
+                                time = "오전 "+ hour + "시 " + min +"분";
+                            } else {
+                                hour -= 12;
+                                time = "오후 "+ hour + "시 " + min +"분";
+                            }
+
                             list.add(new Data(UserID, sendmsg, time));
-                            Log.d(TAG, "확인시작");
-                            Log.d(TAG, "확인 list 사이즈 "+ list.size());
-                            Log.d(TAG, "확인 -userid "+ UserID);
-                            Log.d(TAG, "확인 -sendmsg "+ sendmsg);
-                            Log.d(TAG, "확인 -hour "+ hour);
-                            Log.d(TAG, "확인 list 사이즈 "+ list.get(0).msg);
-                            adapter.notifyItemChanged(adapter.getItemCount() - 1, "click");
+                            adapter.notifyItemChanged(adapter.getItemCount() - 1);
                             recyclerView.setAdapter(adapter);
                             // sendWriter.println(UserID +">"+ sendmsg);
                             sendWriter.flush();
@@ -172,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            chatView.setText(chatView.getText().toString()+msg+"\n");
+            // chatView.setText(chatView.getText().toString()+msg+"\n");
         }
     }
 }
