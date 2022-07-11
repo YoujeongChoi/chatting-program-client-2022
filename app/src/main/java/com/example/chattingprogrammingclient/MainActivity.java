@@ -1,56 +1,47 @@
 package com.example.chattingprogrammingclient;
-
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.net.UnknownHostException;
+import java.nio.Buffer;
 
 public class MainActivity extends AppCompatActivity {
-
-    ArrayList<Data> list = new ArrayList();
-    // LocalTime now = LocalTime.now();
-    MessageAdapter adapter;
-    RecyclerView recyclerView;
-
-
     private Handler mHandler;
+    InetAddress serverAddr;
     Socket socket;
     PrintWriter sendWriter;
-    String IpAddress;
-    // private String IpAddress = "10.101.3.35";
-    private int port = 8887;
+    private String ip = "your ip";
+    private int port = 8888;
 
-    String read;
-
-
-    TextView main_top_userId;
+    TextView textView;
     String UserID;
+    Button connectbutton;
     ImageButton chatbutton;
+    TextView chatView;
     EditText message;
     String sendmsg;
-    ImageButton backButton;
-    TextView chatMessage;
-
-//    int hour = 0 ;
-//    int min = 0;
-//    String time;
+    String read;
 
     @Override
     protected void onStop() {
@@ -67,47 +58,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = getIntent();
         mHandler = new Handler();
-
-
-        list = new ArrayList<>();
-
-        UserID = intent.getStringExtra("username");
-        IpAddress = intent.getStringExtra("ip");
-
-        backButton = (ImageButton) findViewById(R.id.backButton);
-        chatbutton = (ImageButton) findViewById(R.id.chatbutton);
-
-        main_top_userId = (TextView) findViewById(R.id.main_top_userId);
-        main_top_userId.setText(UserID);
+        // textView = (TextView) findViewById(R.id.textView);
+        chatView = (TextView) findViewById(R.id.chatRv);
         message = (EditText) findViewById(R.id.getMessageText);
-
-        chatMessage = (TextView) findViewById(R.id.chatMessage);
-
-        adapter = new MessageAdapter(list);
-        recyclerView = findViewById(R.id.chatRv);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        Intent intent = getIntent();
+        UserID = intent.getStringExtra("username");
+        textView.setText(UserID);
+        chatbutton = (ImageButton) findViewById(R.id.chatbutton);
 
         new Thread() {
             public void run() {
-                // 수신 스레드
                 try {
-                    InetAddress serverAddr = InetAddress.getByName(IpAddress);
+                    InetAddress serverAddr = InetAddress.getByName(ip);
                     socket = new Socket(serverAddr, port);
                     sendWriter = new PrintWriter(socket.getOutputStream());
                     BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     while(true){
-//                        Log.d(TAG, "확인");
                         read = input.readLine();
-                        String array[] = read.split(" ");
-                        Log.d(TAG, "확인용 - id: "+array[0]);
-                        Log.d(TAG, "확인용 - 메세지: "+array[1]);
-                        System.out.println("<Server> from Client: "+read);
+
+                        System.out.println("TTTTTTTT"+read);
                         if(read!=null){
                             mHandler.post(new msgUpdate(read));
                         }
@@ -116,19 +86,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } }}.start();
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, EnterActivity.class);
-                IpAddress = null;
-                UserID = null;
-                list = null;
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        // 송신 스레드
         chatbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,18 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         super.run();
                         try {
-//                            hour = now.getHour();
-//                            min = now.getMinute();
-//                            if (hour < 12 ) {
-//                                time = "오전 "+ hour + "시 " + min +"분";
-//                            } else {
-//                                hour -= 12;
-//                                time = "오후 "+ hour + "시 " + min +"분";
-//                            }
-                            sendWriter.println(UserID +" "+ sendmsg);
-                            list.add(new Data(UserID, sendmsg));
-                            // recyclerView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
+                            sendWriter.println(UserID +">"+ sendmsg);
                             sendWriter.flush();
                             message.setText("");
                         } catch (Exception e) {
@@ -161,28 +107,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public class msgUpdate implements Runnable{
+    class msgUpdate implements Runnable{
         private String msg;
         public msgUpdate(String str) {this.msg=str;}
 
         @Override
         public void run() {
-//            hour = now.getHour();
-//            min = now.getMinute();
-//            if (hour < 12 ) {
-//                time = "오전 "+ hour + "시 " + min +"분";
-//            } else {
-//                hour -= 12;
-//                time = "오후 "+ hour + "시 " + min +"분";
-//            }
-            String array[] = msg.split(" ");
-            list.add(new Data(array[0], array[1]));
-            //
-            // recyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            // chatMessage.setText(chatMessage.getText().toString()+msg+"\n");
+            chatView.setText(chatView.getText().toString()+msg+"\n");
         }
     }
-
-
 }
