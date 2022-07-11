@@ -21,6 +21,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
 
+
     @NonNull
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,7 +35,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         holder.userID.setText(list.get(position).userId);
         holder.chatMsg.setText(list.get(position).msg);
-        holder.time.setText(list.get(position).time);
+        // holder.time.setText(list.get(position).time);
     }
 
     @Override

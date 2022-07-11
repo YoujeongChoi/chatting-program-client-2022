@@ -4,7 +4,7 @@ public class Data {
 
     String userId;
     String msg;
-    String time;
+    // String time;
 
     // getter and setter
     public String getUserId() {
@@ -23,19 +23,19 @@ public class Data {
         this.msg = msg;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
+//    public String getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(String time) {
+//        this.time = time;
+//    }
 
     // Constructor
-    public Data(String userId, String msg, String time) {
+    public Data(String userId, String msg) {
         this.userId = userId;
         this.msg = msg;
-        this.time = time;
+        // this.time = time;
     }
 
 }
