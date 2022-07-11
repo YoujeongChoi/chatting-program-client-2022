@@ -2,8 +2,6 @@ package com.example.chattingprogrammingclient;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +21,6 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -186,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
             // chatMessage.setText(chatMessage.getText().toString()+msg+"\n");
         }
     }
-
 
 
 }
