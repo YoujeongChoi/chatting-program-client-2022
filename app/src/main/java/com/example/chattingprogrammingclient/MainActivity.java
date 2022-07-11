@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.time.LocalTime;
 
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     String sendmsg;
     String read;
     ImageButton backButton;
+    RecyclerView recyclerView;
+    TextView chatMessage;
 
 
     int hour = 0 ;
@@ -87,29 +90,38 @@ public class MainActivity extends AppCompatActivity {
         main_top_userId.setText(UserID);
         message = (EditText) findViewById(R.id.getMessageText);
 
+        chatMessage = (TextView) findViewById(R.id.chatMessage);
+
         // chatView는 수정예정
 //        chatView = (TextView) findViewById(R.id.chatView);
 
         adapter = new MessageAdapter(list);
-        RecyclerView recyclerView = findViewById(R.id.chatRv);
+        recyclerView = findViewById(R.id.chatRv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Log.d(TAG, "순서확인용44444444");
+
+
         new Thread() {
             public void run() {
-                Log.d(TAG, "순서확인용2222222");
+                // 수신 스레드
                 try {
                     InetAddress serverAddr = InetAddress.getByName(IpAddress);
                     socket = new Socket(serverAddr, port);
                     sendWriter = new PrintWriter(socket.getOutputStream());
                     BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                    System.out.println("확인!!!!!!!!!!!!" + input);
                     while(true){
+//                        Log.d(TAG, "확인");
                         read = input.readLine();
-
+                        String array[] = read.split(" ");
+                        Log.d(TAG, "확인하고싶다..."+array[0]);
+                        Log.d(TAG, "확인하고싶다..."+array[1]);
                         System.out.println("TTTTTTTT"+read);
                         if(read!=null){
                             mHandler.post(new msgUpdate(read));
+                            // adapter.notifyItemChanged(adapter.getItemCount() - 1);
+                            recyclerView.setAdapter(adapter);
                         }
                     }
                 } catch (IOException e) {
@@ -128,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 송신 스레드
         chatbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,19 +150,20 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         super.run();
                         try {
-                            hour = now.getHour();
-                            min = now.getMinute();
-                            if (hour < 12 ) {
-                                time = "오전 "+ hour + "시 " + min +"분";
-                            } else {
-                                hour -= 12;
-                                time = "오후 "+ hour + "시 " + min +"분";
-                            }
-
+//                            hour = now.getHour();
+//                            min = now.getMinute();
+//                            if (hour < 12 ) {
+//                                time = "오전 "+ hour + "시 " + min +"분";
+//                            } else {
+//                                hour -= 12;
+//                                time = "오후 "+ hour + "시 " + min +"분";
+//                            }
+//
                             list.add(new Data(UserID, sendmsg, time));
-                            adapter.notifyItemChanged(adapter.getItemCount() - 1);
+                            // adapter.notifyItemChanged(adapter.getItemCount() - 1);
                             recyclerView.setAdapter(adapter);
-                            // sendWriter.println(UserID +">"+ sendmsg);
+                            sendWriter.println(UserID +" "+ sendmsg);
+//                            sendWriter.println(list.get(list.size()-1));
                             sendWriter.flush();
                             message.setText("");
                         } catch (Exception e) {
@@ -160,9 +174,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
+
 
     class msgUpdate implements Runnable{
         private String msg;
@@ -170,7 +183,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            // chatView.setText(chatView.getText().toString()+msg+"\n");
+            hour = now.getHour();
+            min = now.getMinute();
+            if (hour < 12 ) {
+                time = "오전 "+ hour + "시 " + min +"분";
+            } else {
+                hour -= 12;
+                time = "오후 "+ hour + "시 " + min +"분";
+            }
+            String array[] = msg.split(" ");
+            list.add(new Data(array[0], array[1], time));
+            // chatMessage.setText(chatMessage.getText().toString()+msg+"\n");
         }
     }
 }
